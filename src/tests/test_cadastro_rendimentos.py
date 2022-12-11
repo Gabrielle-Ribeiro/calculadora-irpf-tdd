@@ -1,24 +1,21 @@
 from IRPF.SimuladorIRPF import SimuladorIRPF
-
+import pytest
 
 class TestCadastroRendimentos:
-    def test_cadastra_um_novo_rendimento(self):
-        simulador_irpf = SimuladorIRPF()
-        simulador_irpf.cadastra_rendimento("Salário", 10000)
 
-        assert simulador_irpf.total_rendimentos == 10000
+    PARAMETERS = [
+        ([("Salário", 10000)], 10000),
+        ([("Salário", 10000), ("Dividendos", 2000)], 12000),
+        ([("Salário", 10000), ("Dividendos", 2000), ("Aluguel", 1800)], 13800),
+    ]
 
-    def test_cadastra_dois_novos_rendimentos(self):
-        simulador_irpf = SimuladorIRPF()
-        simulador_irpf.cadastra_rendimento("Salário", 10000)
-        simulador_irpf.cadastra_rendimento("Dividendos", 2000)
+    @pytest.fixture
+    def simulador_irpf(self):
+        return SimuladorIRPF()
 
-        assert simulador_irpf.total_rendimentos == 12000
+    @pytest.mark.parametrize("entrada, valor_esperado", PARAMETERS)
+    def test_cadastra_um_novo_rendimento(self, simulador_irpf, entrada, valor_esperado):
+        for descricao, valor in entrada:
+            simulador_irpf.cadastra_rendimento(descricao, valor)
 
-    def test_cadastra_tres_novos_rendimentos(self):
-        simulador_irpf = SimuladorIRPF()
-        simulador_irpf.cadastra_rendimento("Salário", 10000)
-        simulador_irpf.cadastra_rendimento("Dividendos", 2000)
-        simulador_irpf.cadastra_rendimento("Aluguel", 1800)
-
-        assert simulador_irpf.total_rendimentos == 13800
+        assert simulador_irpf.total_rendimentos == valor_esperado
