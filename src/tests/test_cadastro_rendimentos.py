@@ -7,3 +7,10 @@ class TestCadastroRendimentos:
         simulador_irpf.cadastra_rendimento("Salário", 10000)
 
         assert simulador_irpf.total_rendimentos == 10000
+
+    def test_cadastra_dois_novos_rendimentos(self):
+        simulador_irpf = SimuladorIRPF()
+        simulador_irpf.cadastra_rendimento("Salário", 10000)
+        simulador_irpf.cadastra_rendimento("Dividendos", 2000)
+
+        assert simulador_irpf.total_rendimentos == 12000
