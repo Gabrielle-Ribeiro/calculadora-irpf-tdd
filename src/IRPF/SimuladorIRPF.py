@@ -4,6 +4,8 @@ class SimuladorIRPF:
         self._total_rendimentos = 0
 
     def cadastra_rendimento(self, descricao, valor):
+        if not descricao:
+            raise Exception("DescricaoEmBrancoException")
         self.rendimentos.append((descricao, valor))
         self._total_rendimentos += valor
 
