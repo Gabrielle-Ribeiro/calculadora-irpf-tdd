@@ -6,6 +6,9 @@ class SimuladorIRPF:
     def cadastra_rendimento(self, descricao, valor):
         if not descricao:
             raise Exception("DescricaoEmBrancoException")
+        if valor is None or valor < 0:
+            raise Exception("ValorRendimentoInvalidoException")
+
         self.rendimentos.append((descricao, valor))
         self._total_rendimentos += valor
 
