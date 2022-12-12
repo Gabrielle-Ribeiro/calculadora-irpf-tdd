@@ -13,6 +13,11 @@ class TestExecaoCadastroRendimentos:
             simulador_irpf.cadastra_rendimento("", 3000)
         assert "DescricaoEmBrancoException" in str(resultado)
 
+    def test_excecao_descricao_none(self, simulador_irpf):
+        with pytest.raises(Exception) as resultado:
+            simulador_irpf.cadastra_rendimento(None, 3000)
+        assert "DescricaoEmBrancoException" in str(resultado)
+
     def test_excecao_valor_invalido(self, simulador_irpf):
         with pytest.raises(Exception) as resultado:
             simulador_irpf.cadastra_rendimento("Salario", -1)
