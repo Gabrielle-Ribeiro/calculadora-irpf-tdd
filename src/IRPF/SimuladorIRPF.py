@@ -2,6 +2,8 @@ class SimuladorIRPF:
     def __init__(self, ):
         self.rendimentos = []
         self._total_rendimentos = 0
+        self.deducoes = []
+        self._total_deducoes = 0
 
     def cadastra_rendimento(self, descricao, valor):
         if not descricao:
@@ -15,3 +17,11 @@ class SimuladorIRPF:
     @property
     def total_rendimentos(self):
         return self._total_rendimentos
+
+    def cadastra_deducao(self, descricao, valor):
+        self.deducoes.append((descricao, valor))
+        self._total_deducoes += valor
+
+    @property
+    def total_deducoes(self):
+        return self._total_deducoes

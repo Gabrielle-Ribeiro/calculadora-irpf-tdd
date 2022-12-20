@@ -8,3 +8,11 @@ class TestCadastroDeducoes:
         simulador_irpf.cadastra_deducao("Previdencia privada", 200)
 
         assert simulador_irpf.total_deducoes == 200
+
+
+    def test_cadastra_duas_novas_deducoes(self):
+        simulador_irpf = SimuladorIRPF()
+        simulador_irpf.cadastra_deducao("Previdencia privada", 200)
+        simulador_irpf.cadastra_deducao("Funpresp", 150)
+
+        assert simulador_irpf.total_deducoes == 350
