@@ -3,23 +3,19 @@ import pytest
 
 class TestCadastroPrevidenciaOficial:
 
-    def test_cadastra_uma_nova_previdencia_oficial(self):
-        simulador_irpf = SimuladorIRPF()
-        simulador_irpf.cadastra_previdencia_oficial("Previdencia oficial", 400)
+    PARAMETERS = [
+        ([("Previdencia oficial", 400)], 400),
+        ([("Previdencia oficial", 300), ("Previdencia oficial 2", 200)], 500),
+        ([("Previdencia oficial", 300), ("Previdencia oficial 2", 200), ("Previdencia oficial 3", 100)], 600),
+    ]
 
-        assert simulador_irpf.total_deducoes == 400
+    @pytest.fixture
+    def simulador_irpf(self):
+        return SimuladorIRPF()
 
-    def test_cadastra_duas_novas_previdencias_oficiais(self):
-        simulador_irpf = SimuladorIRPF()
-        simulador_irpf.cadastra_previdencia_oficial("Previdencia oficial", 300)
-        simulador_irpf.cadastra_previdencia_oficial("Previdencia oficial 2", 200)
+    @pytest.mark.parametrize("entrada, valor_esperado", PARAMETERS)
+    def test_cadastra_uma_nova_previdencia_oficial(self, simulador_irpf, entrada, valor_esperado):
+        for descricao, valor in entrada:
+            simulador_irpf.cadastra_previdencia_oficial(descricao, valor)
 
-        assert simulador_irpf.total_deducoes == 500
-
-    def test_cadastra_tres_novas_previdencias_oficiais(self):
-        simulador_irpf = SimuladorIRPF()
-        simulador_irpf.cadastra_previdencia_oficial("Previdencia oficial", 300)
-        simulador_irpf.cadastra_previdencia_oficial("Previdencia oficial 2", 200)
-        simulador_irpf.cadastra_previdencia_oficial("Previdencia oficial 3", 100)
-
-        assert simulador_irpf.total_deducoes == 600
+        assert simulador_irpf.total_deducoes == valor_esperado
