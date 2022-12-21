@@ -94,3 +94,14 @@ class SimuladorIRPF:
     def calcula_imposto_faixa_2(self):
         return 0.075 * self.calcula_base_faixa_2()
 
+    def calcula_base_faixa_3(self):
+        base_calculo = self.calcula_base_de_calculo()
+
+        if base_calculo > (1903.98 + 922.67 + 924.40):
+            return 924.40
+        elif base_calculo > (1903.98 + 922.67):
+            return base_calculo - (1903.98 + 922.67)
+        return 0
+
+    def calcula_imposto_faixa_3(self):
+        return 0.15 * self.calcula_base_faixa_3()
