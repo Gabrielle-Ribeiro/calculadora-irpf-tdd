@@ -4,23 +4,20 @@ import pytest
 
 class TestCadastroDeducoes:
 
-    def test_cadastra_uma_nova_deducao(self):
-        simulador_irpf = SimuladorIRPF()
-        simulador_irpf.cadastra_deducao("Previdencia privada", 200)
+    PARAMETERS = [
+        ([("Previdencia privada", 200)], 200),
+        ([("Previdencia privada", 200), ("Funpresp", 150)], 350),
+        ([("Previdencia privada", 100), ("Funpresp", 100), ("Saude", 112)], 312),
+    ]
 
-        assert simulador_irpf.total_deducoes == 200
+    @pytest.fixture
+    def simulador_irpf(self):
+        return SimuladorIRPF()
 
-    def test_cadastra_duas_novas_deducoes(self):
-        simulador_irpf = SimuladorIRPF()
-        simulador_irpf.cadastra_deducao("Previdencia privada", 200)
-        simulador_irpf.cadastra_deducao("Funpresp", 150)
+    @pytest.mark.parametrize("entrada, valor_esperado", PARAMETERS)
+    def test_cadastra_uma_nova_deducao(self, simulador_irpf, entrada, valor_esperado):
+        for descricao, valor in entrada:
+            simulador_irpf.cadastra_deducao(descricao, valor)
 
-        assert simulador_irpf.total_deducoes == 350
+        assert simulador_irpf.total_deducoes == valor_esperado
 
-    def test_cadastra_duas_novas_deducoes(self):
-        simulador_irpf = SimuladorIRPF()
-        simulador_irpf.cadastra_deducao("Previdencia privada", 100)
-        simulador_irpf.cadastra_deducao("Funpresp", 100)
-        simulador_irpf.cadastra_deducao("Saude", 112)
-
-        assert simulador_irpf.total_deducoes == 312
