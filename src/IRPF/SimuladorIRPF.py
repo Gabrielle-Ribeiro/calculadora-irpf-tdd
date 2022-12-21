@@ -58,6 +58,9 @@ class SimuladorIRPF:
         return self._total_pensao_alimenticia
 
     def cadastra_dependente(self, nome, data_nascimento):
+        if not nome:
+            raise Exception("NomeEmBrancoException")
+
         self.dependentes.append((nome, data_nascimento))
         self._total_deducoes += 189.59
         self._total_dependentes += 1
