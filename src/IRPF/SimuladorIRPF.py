@@ -36,5 +36,8 @@ class SimuladorIRPF:
         if not descricao:
             raise Exception("DescricaoEmBrancoException")
         
+        if valor is None or valor < 0:
+            raise Exception("ValorDeducaoInvalidoException")
+        
         self.previdencias_oficiais.append((descricao, valor))
         self._total_deducoes += valor
