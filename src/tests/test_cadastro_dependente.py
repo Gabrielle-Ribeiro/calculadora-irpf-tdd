@@ -3,26 +3,19 @@ import pytest
 
 class TestCadastroDepedente:
 
-    def test_cadastra_uma_nova_dependente(self):
-        simulador_irpf = SimuladorIRPF()
-        simulador_irpf.cadastra_dependente("Carlos Brown", "01/02/2004")
+    PARAMETERS = [
+        ([("Carlos Brown", "01/02/2004")], 189.59, 1),
+        ([("Carlos Brown", "01/02/2004"), ("Tony Sterco", "05/07/2020")], 379.18, 2),
+        ([("Carlos Brown", "01/02/2004"), ("Tony Sterco", "05/07/2020"), ("Jorel Filho", "07/06/2015")], 568.77, 3),
+    ]
 
-        assert simulador_irpf.total_deducoes == 189.59
-        assert simulador_irpf._total_dependentes == 1
+    @pytest.fixture
+    def simulador_irpf(self):
+        return SimuladorIRPF()
 
-    def test_cadastra_dois_novos_dependentes(self):
-        simulador_irpf = SimuladorIRPF()
-        simulador_irpf.cadastra_dependente("Carlos Brown", "01/02/2004")
-        simulador_irpf.cadastra_dependente("Tony Sterco", "05/07/2020")
-
-        assert simulador_irpf.total_deducoes == 379.18
-        assert simulador_irpf._total_dependentes == 2
-
-    def test_cadastra_tres_novos_dependentes(self):
-        simulador_irpf = SimuladorIRPF()
-        simulador_irpf.cadastra_dependente("Carlos Brown", "01/02/2004")
-        simulador_irpf.cadastra_dependente("Tony Sterco", "05/07/2020")
-        simulador_irpf.cadastra_dependente("Jorel Filho", "07/06/2015")
-
-        assert simulador_irpf.total_deducoes == 568.77
-        assert simulador_irpf._total_dependentes == 3
+    @pytest.mark.parametrize("entrada, valor_esperado_deducoes, valor_esperado_dependentes", PARAMETERS)
+    def test_cadastra_dependente(self, simulador_irpf, entrada, valor_esperado_deducoes, valor_esperado_dependentes):
+        for nome, data_nascimento in entrada:
+            simulador_irpf.cadastra_dependente(nome, data_nascimento)
+        assert simulador_irpf.total_deducoes == valor_esperado_deducoes
+        assert simulador_irpf.total_dependentes == valor_esperado_dependentes
