@@ -19,6 +19,9 @@ class SimuladorIRPF:
         return self._total_rendimentos
 
     def cadastra_deducao(self, descricao, valor):
+        if not descricao:
+            raise Exception("DescricaoEmBrancoException")
+
         self.deducoes.append((descricao, valor))
         self._total_deducoes += valor
 
