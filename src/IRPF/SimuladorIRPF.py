@@ -33,5 +33,8 @@ class SimuladorIRPF:
         return self._total_deducoes
 
     def cadastra_previdencia_oficial(self, descricao, valor):
+        if not descricao:
+            raise Exception("DescricaoEmBrancoException")
+        
         self.previdencias_oficiais.append((descricao, valor))
         self._total_deducoes += valor
