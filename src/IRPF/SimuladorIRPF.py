@@ -5,6 +5,8 @@ class SimuladorIRPF:
         self.deducoes = []
         self._total_deducoes = 0
         self.previdencias_oficiais = []
+        self._total_pensao_alimenticia = 0
+        self.pensoes_alimenticias = []
 
     def cadastra_rendimento(self, descricao, valor):
         if not descricao:
@@ -41,3 +43,13 @@ class SimuladorIRPF:
         
         self.previdencias_oficiais.append((descricao, valor))
         self._total_deducoes += valor
+
+    def cadastra_pensao_alimenticia(self, valor):
+        self.pensoes_alimenticias.append(valor)
+        self._total_pensao_alimenticia += valor
+        self._total_deducoes += valor
+
+    @property
+    def total_pensao_alimenticia(self):
+        return self._total_pensao_alimenticia
+
