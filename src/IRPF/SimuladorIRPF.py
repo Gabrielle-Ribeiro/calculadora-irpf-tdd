@@ -73,7 +73,12 @@ class SimuladorIRPF:
         return self._total_rendimentos - self._total_deducoes
 
     def calcula_base_faixa_1(self):
-        return 1200
+        base_calculo = self.calcula_base_de_calculo()
+
+        if base_calculo <= 1903.98:
+            return base_calculo
+        return 1903.98
 
     def calcula_imposto_faixa_1(self):
         return 0
+
