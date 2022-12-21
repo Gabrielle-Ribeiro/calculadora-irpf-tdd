@@ -3,23 +3,19 @@ import pytest
 
 class TestCalculoAliquota:
 
-    def test_calcula_aliquota(self):
-        simulador_irpf = SimuladorIRPF()
-        simulador_irpf.cadastra_rendimento("Salario", 1800)
+    PARAMETERS = [
+        (("Salario", 1800), 0, 0),
+        (("Salario", 3000), 95.20, 3.17),
+        (("Salario", 10000), 1880.64, 18.8),
+    ]
 
-        assert simulador_irpf.calcula_total_imposto() == 0
-        assert simulador_irpf.calcula_total_aliquota() == 0
+    @pytest.fixture
+    def simulador_irpf(self):
+        return SimuladorIRPF()
 
-    def test_calcula_segunda_aliquota(self):
-        simulador_irpf = SimuladorIRPF()
-        simulador_irpf.cadastra_rendimento("Salario", 3000)
+    @pytest.mark.parametrize("entrada, valor_esperado_imposto, valor_esperado_aliquota", PARAMETERS)
+    def test_calculo_aliquota(self, simulador_irpf, entrada, valor_esperado_imposto, valor_esperado_aliquota):
+        simulador_irpf.cadastra_rendimento(entrada[0], entrada[1])
 
-        assert simulador_irpf.calcula_total_imposto() == pytest.approx(95.20, 0.1)
-        assert simulador_irpf.calcula_total_aliquota() == pytest.approx(3.17, 0.1)
-
-    def test_calcula_terceira_aliquota(self):
-        simulador_irpf = SimuladorIRPF()
-        simulador_irpf.cadastra_rendimento("Salario", 10000)
-
-        assert simulador_irpf.calcula_total_imposto() == pytest.approx(1880.64, 0.1)
-        assert simulador_irpf.calcula_total_aliquota() == pytest.approx(18.8, 0.1)
+        assert simulador_irpf.calcula_total_imposto() == pytest.approx(valor_esperado_imposto, 0.1)
+        assert simulador_irpf.calcula_total_aliquota() == pytest.approx(valor_esperado_aliquota, 0.1)
