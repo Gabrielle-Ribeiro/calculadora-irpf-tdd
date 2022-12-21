@@ -127,3 +127,9 @@ class SimuladorIRPF:
 
     def calcula_imposto_faixa_5(self):
         return 0.275 * self.calcula_base_faixa_5()
+
+    def calcula_total_imposto(self):
+        return 0
+    
+    def calcula_total_aliquota(self):
+        return 0
