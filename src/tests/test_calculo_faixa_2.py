@@ -2,7 +2,7 @@ from IRPF.SimuladorIRPF import SimuladorIRPF
 import pytest
 
 
-class TestCalculoFaixa1:
+class TestCalculoFaixa2:
 
     PARAMETERS = [
         (("Salario", 1903.98), 0, 0),
