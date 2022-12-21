@@ -7,6 +7,8 @@ class SimuladorIRPF:
         self.previdencias_oficiais = []
         self._total_pensao_alimenticia = 0
         self.pensoes_alimenticias = []
+        self.dependentes = []
+        self._total_dependentes = 0
 
     def cadastra_rendimento(self, descricao, valor):
         if not descricao:
@@ -55,3 +57,11 @@ class SimuladorIRPF:
     def total_pensao_alimenticia(self):
         return self._total_pensao_alimenticia
 
+    def cadastra_dependente(self, nome, data_nascimento):
+        self.dependentes.append((nome, data_nascimento))
+        self._total_deducoes += 189.59
+        self._total_dependentes += 1
+    
+    @property
+    def total_dependentes(self):
+        return self._total_dependentes
