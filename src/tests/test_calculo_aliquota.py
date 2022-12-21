@@ -10,7 +10,7 @@ class TestCalculoAliquota:
         assert simulador_irpf.calcula_total_imposto() == 0
         assert simulador_irpf.calcula_total_aliquota() == 0
 
-    def test_calcula_aliquota(self):
+    def test_calcula_outra_aliquota(self):
         simulador_irpf = SimuladorIRPF()
         simulador_irpf.cadastra_rendimento("Salario", 3000)
 
