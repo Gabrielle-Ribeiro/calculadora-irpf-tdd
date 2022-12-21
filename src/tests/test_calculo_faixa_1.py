@@ -4,23 +4,19 @@ import pytest
 
 class TestCalculoFaixa1:
 
-    def test_calculo_faixa_1(self):
-        simulador_irpf = SimuladorIRPF()
-        simulador_irpf.cadastra_rendimento("Salario", 1200)
+    PARAMETERS = [
+        (("Salario", 1200), 1200, 0),
+        (("Salario", 1903.98), 1903.98, 0),
+        (("Salario", 20000), 1903.98, 0),
+    ]
 
-        assert simulador_irpf.calcula_base_faixa_1() == 1200
-        assert simulador_irpf.calcula_imposto_faixa_1() == 0
+    @pytest.fixture
+    def simulador_irpf(self):
+        return SimuladorIRPF()
 
-    def test_outro_calculo_faixa_1(self):
-        simulador_irpf = SimuladorIRPF()
-        simulador_irpf.cadastra_rendimento("Salario", 1903.98)
+    @pytest.mark.parametrize("entrada, valor_esperado_base, valor_esperado_imposto", PARAMETERS)
+    def test_calculo_faixa_1(self, simulador_irpf, entrada, valor_esperado_base, valor_esperado_imposto):
+        simulador_irpf.cadastra_rendimento(entrada[0], entrada[1])
 
-        assert simulador_irpf.calcula_base_faixa_1() == 1903.98
-        assert simulador_irpf.calcula_imposto_faixa_1() == 0
-
-    def test_terceiro_calculo_faixa_1(self):
-        simulador_irpf = SimuladorIRPF()
-        simulador_irpf.cadastra_rendimento("Salario", 20000)
-
-        assert simulador_irpf.calcula_base_faixa_1() == 1903.98
-        assert simulador_irpf.calcula_imposto_faixa_1() == 0
+        assert simulador_irpf.calcula_base_faixa_1() == valor_esperado_base
+        assert simulador_irpf.calcula_imposto_faixa_1() == valor_esperado_imposto
