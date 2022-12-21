@@ -45,6 +45,8 @@ class SimuladorIRPF:
         self._total_deducoes += valor
 
     def cadastra_pensao_alimenticia(self, valor):
+        if valor is None or valor < 0:
+            raise Exception("ValorPensaoAlimenticiaInvalidoException")
         self.pensoes_alimenticias.append(valor)
         self._total_pensao_alimenticia += valor
         self._total_deducoes += valor
