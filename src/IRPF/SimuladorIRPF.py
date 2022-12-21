@@ -4,6 +4,7 @@ class SimuladorIRPF:
         self._total_rendimentos = 0
         self.deducoes = []
         self._total_deducoes = 0
+        self.previdencias_oficiais = []
 
     def cadastra_rendimento(self, descricao, valor):
         if not descricao:
@@ -30,3 +31,7 @@ class SimuladorIRPF:
     @property
     def total_deducoes(self):
         return self._total_deducoes
+
+    def cadastra_previdencia_oficial(self, descricao, valor):
+        self.previdencias_oficiais.append((descricao, valor))
+        self._total_deducoes += valor
