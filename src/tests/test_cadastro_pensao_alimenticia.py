@@ -4,27 +4,22 @@ import pytest
 
 class TestCadastroPensaoAlimenticia:
 
-    def test_cadastra_uma_pensao_alimenticia(self):
-        simulador_irpf = SimuladorIRPF()
-        simulador_irpf.cadastra_pensao_alimenticia(300)
+    PARAMETERS = [
+        ([300], 300, 300),
+        ([250, 250], 500, 500),
+        ([200, 200, 200], 600, 600),
+    ]
 
-        assert simulador_irpf.total_pensao_alimenticia == 300
-        assert simulador_irpf.total_deducoes == 300
+    @pytest.fixture
+    def simulador_irpf(self):
+        return SimuladorIRPF()
 
-    def test_cadastra_duas_pensoes_alimenticias(self):
-        simulador_irpf = SimuladorIRPF()
-        simulador_irpf.cadastra_pensao_alimenticia(250)
-        simulador_irpf.cadastra_pensao_alimenticia(250)
+    @pytest.mark.parametrize("entrada, valor_esperado_pensao, valor_esperado_deducoes", PARAMETERS)
+    def test_cadastra_um_novo_rendimento(self, simulador_irpf, entrada, valor_esperado_pensao, valor_esperado_deducoes):
+        for valor in entrada:
+            simulador_irpf.cadastra_pensao_alimenticia(valor)
 
-        assert simulador_irpf.total_pensao_alimenticia == 500
-        assert simulador_irpf.total_deducoes == 500
+        assert simulador_irpf.total_pensao_alimenticia == valor_esperado_pensao
+        assert simulador_irpf.total_deducoes == valor_esperado_deducoes
 
-    def test_cadastra_tres_pensoes_alimenticias(self):
-        simulador_irpf = SimuladorIRPF()
-        simulador_irpf.cadastra_pensao_alimenticia(200)
-        simulador_irpf.cadastra_pensao_alimenticia(200)
-        simulador_irpf.cadastra_pensao_alimenticia(200)
-
-        assert simulador_irpf.total_pensao_alimenticia == 600
-        assert simulador_irpf.total_deducoes == 600
 
