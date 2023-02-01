@@ -1,4 +1,14 @@
 class SimuladorIRPF:
+    TETO_FAIXA_1 = 1903.98
+    TETO_FAIXA_2 = 922.67
+    TETO_FAIXA_3 = 924.40
+    TETO_FAIXA_4 = 913.63
+    PORCETAGEM_FAIXA_2 = 0.075
+    PORCETAGEM_FAIXA_3 = 0.15
+    PORCETAGEM_FAIXA_4 = 0.225
+    PORCETAGEM_FAIXA_5 = 0.275
+    DEDUCAO_DE_DEPEDENTE = 189.59
+
     def __init__(self, ):
         self.rendimentos = []
         self._total_rendimentos = 0
@@ -62,7 +72,7 @@ class SimuladorIRPF:
             raise Exception("NomeEmBrancoException")
 
         self.dependentes.append((nome, data_nascimento))
-        self._total_deducoes += 189.59
+        self._total_deducoes += self.DEDUCAO_DE_DEPEDENTE
         self._total_dependentes += 1
 
     @property
@@ -84,28 +94,28 @@ class SimuladorIRPF:
         return self.realiza_calculo_valor_faixa_2(base_calculo)
 
     def calcula_imposto_faixa_2(self):
-        return 0.075 * self.calcula_base_faixa_2()
+        return self.PORCETAGEM_FAIXA_2 * self.calcula_base_faixa_2()
 
     def calcula_base_faixa_3(self):
         base_calculo = self.calcula_base_de_calculo()
         return self.realiza_calculo_valor_faixa_3(base_calculo)
 
     def calcula_imposto_faixa_3(self):
-        return 0.15 * self.calcula_base_faixa_3()
+        return self.PORCETAGEM_FAIXA_3 * self.calcula_base_faixa_3()
 
     def calcula_base_faixa_4(self):
         base_calculo = self.calcula_base_de_calculo()
         return self.realiza_calculo_valor_faixa_4(base_calculo)
 
     def calcula_imposto_faixa_4(self):
-        return 0.225 * self.calcula_base_faixa_4()
+        return self.PORCETAGEM_FAIXA_4  * self.calcula_base_faixa_4()
 
     def calcula_base_faixa_5(self):
         base_calculo = self.calcula_base_de_calculo()
         return self.realiza_calculo_valor_faixa_5(base_calculo)
 
     def calcula_imposto_faixa_5(self):
-        return 0.275 * self.calcula_base_faixa_5()
+        return self.PORCETAGEM_FAIXA_5 * self.calcula_base_faixa_5()
 
     def calcula_total_imposto(self):
         imposto = Imposto(self)
@@ -115,34 +125,34 @@ class SimuladorIRPF:
         return (self.calcula_total_imposto() * 100) / self.calcula_base_de_calculo()
 
     def realiza_calculo_valor_faixa_1(self, base_calculo):
-        if base_calculo <= 1903.98:
+        if base_calculo <= self.TETO_FAIXA_1:
             return base_calculo
-        return 1903.98
+        return self.TETO_FAIXA_1
 
     def realiza_calculo_valor_faixa_2(self, base_calculo):
-        if base_calculo > (1903.98 + 922.67):
-            return 922.67
-        elif base_calculo > 1903.98:
-            return base_calculo - 1903.98
+        if base_calculo > (self.TETO_FAIXA_1 + self.TETO_FAIXA_2):
+            return self.TETO_FAIXA_2
+        elif base_calculo > self.TETO_FAIXA_1:
+            return base_calculo - self.TETO_FAIXA_1
         return 0
 
     def realiza_calculo_valor_faixa_3(self, base_calculo):
-        if base_calculo > (1903.98 + 922.67 + 924.40):
-            return 924.40
-        elif base_calculo > (1903.98 + 922.67):
-            return base_calculo - (1903.98 + 922.67)
+        if base_calculo > (self.TETO_FAIXA_1 + self.TETO_FAIXA_2 + self.TETO_FAIXA_3):
+            return self.TETO_FAIXA_3
+        elif base_calculo > (self.TETO_FAIXA_1 + self.TETO_FAIXA_2):
+            return base_calculo - (self.TETO_FAIXA_1 + self.TETO_FAIXA_2)
         return 0
 
     def realiza_calculo_valor_faixa_4(self, base_calculo):
-        if base_calculo > (1903.98 + 922.67 + 924.40 + 913.63):
-            return 913.63
-        elif base_calculo > (1903.98 + 922.67 + 924.40):
-            return base_calculo - (1903.98 + 922.67 + 924.40)
+        if base_calculo > (self.TETO_FAIXA_1 + self.TETO_FAIXA_2 + self.TETO_FAIXA_3 + self.TETO_FAIXA_4):
+            return self.TETO_FAIXA_4
+        elif base_calculo > (self.TETO_FAIXA_1 + self.TETO_FAIXA_2 + self.TETO_FAIXA_3):
+            return base_calculo - (self.TETO_FAIXA_1 + self.TETO_FAIXA_2 + self.TETO_FAIXA_3)
         return 0
 
     def realiza_calculo_valor_faixa_5(self, base_calculo):
-        if base_calculo > (1903.98 + 922.67 + 924.40 + 913.63):
-            return base_calculo - (1903.98 + 922.67 + 924.40 + 913.63)
+        if base_calculo > (self.TETO_FAIXA_1 + self.TETO_FAIXA_2 + self.TETO_FAIXA_3 + self.TETO_FAIXA_4):
+            return base_calculo - (self.TETO_FAIXA_1 + self.TETO_FAIXA_2 + self.TETO_FAIXA_3 + self.TETO_FAIXA_4)
         return 0
 
 
