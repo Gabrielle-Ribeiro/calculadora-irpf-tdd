@@ -39,10 +39,10 @@ class SimuladorIRPF:
     def cadastra_previdencia_oficial(self, descricao, valor):
         if not descricao:
             raise Exception("DescricaoEmBrancoException")
-        
+
         if valor is None or valor < 0:
             raise Exception("ValorDeducaoInvalidoException")
-        
+
         self.previdencias_oficiais.append((descricao, valor))
         self._total_deducoes += valor
 
@@ -64,7 +64,7 @@ class SimuladorIRPF:
         self.dependentes.append((nome, data_nascimento))
         self._total_deducoes += 189.59
         self._total_dependentes += 1
-    
+
     @property
     def total_dependentes(self):
         return self._total_dependentes
@@ -74,66 +74,76 @@ class SimuladorIRPF:
 
     def calcula_base_faixa_1(self):
         base_calculo = self.calcula_base_de_calculo()
-
-        if base_calculo <= 1903.98:
-            return base_calculo
-        return 1903.98
+        return self.realiza_calculo_valor_faixa_1(base_calculo)
 
     def calcula_imposto_faixa_1(self):
         return 0
 
     def calcula_base_faixa_2(self):
         base_calculo = self.calcula_base_de_calculo()
-
-        if base_calculo > (1903.98 + 922.67):
-            return 922.67
-        elif base_calculo > 1903.98:
-            return base_calculo - 1903.98
-        return 0
+        return self.realiza_calculo_valor_faixa_2(base_calculo)
 
     def calcula_imposto_faixa_2(self):
         return 0.075 * self.calcula_base_faixa_2()
 
     def calcula_base_faixa_3(self):
         base_calculo = self.calcula_base_de_calculo()
-
-        if base_calculo > (1903.98 + 922.67 + 924.40):
-            return 924.40
-        elif base_calculo > (1903.98 + 922.67):
-            return base_calculo - (1903.98 + 922.67)
-        return 0
+        return self.realiza_calculo_valor_faixa_3(base_calculo)
 
     def calcula_imposto_faixa_3(self):
         return 0.15 * self.calcula_base_faixa_3()
-    
+
     def calcula_base_faixa_4(self):
         base_calculo = self.calcula_base_de_calculo()
-
-        if base_calculo > (1903.98 + 922.67 + 924.40 + 913.63):
-            return 913.63
-        elif base_calculo > (1903.98 + 922.67 + 924.40):
-            return base_calculo - (1903.98 + 922.67 + 924.40)
-        return 0
+        return self.realiza_calculo_valor_faixa_4(base_calculo)
 
     def calcula_imposto_faixa_4(self):
         return 0.225 * self.calcula_base_faixa_4()
 
     def calcula_base_faixa_5(self):
         base_calculo = self.calcula_base_de_calculo()
-
-        if base_calculo > (1903.98 + 922.67 + 924.40 + 913.63):
-            return base_calculo - (1903.98 + 922.67 + 924.40 + 913.63)
-        return 0
+        return self.realiza_calculo_valor_faixa_5(base_calculo)
 
     def calcula_imposto_faixa_5(self):
         return 0.275 * self.calcula_base_faixa_5()
 
     def calcula_total_imposto(self):
-        return (self.calcula_imposto_faixa_1() + 
-                self.calcula_imposto_faixa_2() +  
+        return (self.calcula_imposto_faixa_1() +
+                self.calcula_imposto_faixa_2() +
                 self.calcula_imposto_faixa_3() +
                 self.calcula_imposto_faixa_4() +
                 self.calcula_imposto_faixa_5())
-    
+
     def calcula_total_aliquota(self):
-        return (self.calcula_total_imposto() * 100 ) / self.calcula_base_de_calculo()
+        return (self.calcula_total_imposto() * 100) / self.calcula_base_de_calculo()
+
+    def realiza_calculo_valor_faixa_1(self, base_calculo):
+        if base_calculo <= 1903.98:
+            return base_calculo
+        return 1903.98
+
+    def realiza_calculo_valor_faixa_2(self, base_calculo):
+        if base_calculo > (1903.98 + 922.67):
+            return 922.67
+        elif base_calculo > 1903.98:
+            return base_calculo - 1903.98
+        return 0
+
+    def realiza_calculo_valor_faixa_3(self, base_calculo):
+        if base_calculo > (1903.98 + 922.67 + 924.40):
+            return 924.40
+        elif base_calculo > (1903.98 + 922.67):
+            return base_calculo - (1903.98 + 922.67)
+        return 0
+
+    def realiza_calculo_valor_faixa_4(self, base_calculo):
+        if base_calculo > (1903.98 + 922.67 + 924.40 + 913.63):
+            return 913.63
+        elif base_calculo > (1903.98 + 922.67 + 924.40):
+            return base_calculo - (1903.98 + 922.67 + 924.40)
+        return 0
+
+    def realiza_calculo_valor_faixa_5(self, base_calculo):
+        if base_calculo > (1903.98 + 922.67 + 924.40 + 913.63):
+            return base_calculo - (1903.98 + 922.67 + 924.40 + 913.63)
+        return 0
